@@ -1,23 +1,64 @@
 {
-    "name": "cap60552/php-sip2",
-    "description": "PHP class library to facilitate communication with Integrated Library System (ILS) servers via 3M's SIP2.",
-	"type": "library",
-    "authors": [
-        {
-            "name": "John Wohlers",
-            "email": "john@wohlershome.net",
-            "role": "Maintainer"
-        }
-    ],
-    "homepage": "https://github.com/cap60552/php-sip2",
-    "license": "GPL-3.0",
-    "support": {
-        "issues": "https://github.com/cap60552/php-sip2/issues",
-		"source": "https://github.com/cap60552/php-sip2",
-		"docs": "https://github.com/cap60552/php-sip2/tree/master/doc"
-    },
-    "autoload": {
-        "classmap": ["/"]
+  "name": "examinecom/php-sip2-plus",
+  "description": "PHP class library to facilitate communication with Integrated Library System (ILS) servers via 3M's SIP2.",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Paul Iway",
+      "email": "paul@examine.com",
+      "role": "Maintainer"
     }
+  ],
+  "homepage": "https://github.com/examinecom/php-sip2-plus",
+  "license": "GPL-3.0",
+  "support": {
+    "issues": "https://github.com/examinecom/php-sip2-plus/issues",
+    "source": "https://github.com/examinecom/php-sip2-plus",
+    "docs": "https://github.com/cap60552/php-sip2/tree/master/doc"
+  },
+  "require": {
+    "php": "^8.2.0"
+  },
+  "require-dev": {
+    "laravel/pint": "^1.24.0",
+    "peckphp/peck": "^0.1.3",
+    "pestphp/pest": "^4.1.0",
+    "pestphp/pest-plugin-type-coverage": "^4.0.2",
+    "phpstan/phpstan": "^2.1.26",
+    "rector/rector": "^2.1.7",
+    "symfony/var-dumper": "^7.3.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "Examine\\Sip2\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  },
+  "scripts": {
+    "lint": "pint",
+    "refactor": "rector",
+    "test:type-coverage": "pest --type-coverage --exactly=100",
+    "test:typos": "peck",
+    "test:lint": "pint --test",
+    "test:unit": "pest --coverage --exactly=100",
+    "test:types": "phpstan",
+    "test:refactor": "rector --dry-run",
+    "test": [
+      "@test:lint",
+      "@test:type-coverage",
+      "@test:typos",
+      "@test:unit",
+      "@test:types",
+      "@test:refactor"
+    ]
+  }
 }
-
