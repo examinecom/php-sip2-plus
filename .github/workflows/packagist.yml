@@ -1,0 +1,36 @@
+name: Packagist Auto Update
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - 'v*'
+
+jobs:
+  notify-packagist:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Packagist update
+        env:
+          PACKAGIST_USERNAME: ${{ secrets.PACKAGIST_USERNAME }}
+          PACKAGIST_TOKEN: ${{ secrets.PACKAGIST_TOKEN }}
+          REPO_URL: https://github.com/${{ github.repository }}
+        run: |
+          set -e
+          echo "Triggering Packagist update for ${REPO_URL}"
+          HTTP_CODE=$(curl -sS -w "%{http_code}" -o response.json \
+            -X POST \
+            -H 'Content-Type: application/json' \
+            -d "{\"repository\":{\"url\":\"${REPO_URL}\"}}" \
+            "https://packagist.org/api/update-package?username=${PACKAGIST_USERNAME}&apiToken=${PACKAGIST_TOKEN}")
+
+          echo "Response (${HTTP_CODE}):"
+          cat response.json || true
+
+          if [ "${HTTP_CODE}" -lt 200 ] || [ "${HTTP_CODE}" -ge 300 ]; then
+            echo "Packagist update failed."
+            exit 1
+          fi
+
+          echo "Packagist update triggered successfully."
